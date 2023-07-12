@@ -1,0 +1,76 @@
+<html lang=”en”>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="container-box">
+                <div class="header">
+                    <h1>Тестовое задание</h1>
+                </div>
+                <div class="container-text">
+                    <p class="text-body">Тестовое задание — отличный инструмент оценки навыков. Без него бывает сложно понять, насколько соискатель подходит компании. Выбрать кандидата только по резюме и портфолио трудно, ведь они не всегда отражают опыт и скиллы соискателя.
+                    </p>
+                </div>
+
+                <div class="container-button">
+                    <a href="#" class="button">Обработать</a>
+                </div>
+            </div>
+
+            <!-- man logo parts -->
+            <div class="container-footer">
+                <img class="img-cap" src="images/cap.svg" alt="Cap">
+                <img class="img-head" src="images/head.svg" alt="Cap">
+                <img class="img-body" src="images/body.svg" alt="Cap">
+            </div>
+        </div>
+    </body>
+    <!-- Loading at the end to ensure whole document is already loaded in window -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>
+        window.onload = function(){
+            // jQuery is loaded
+            jQuery( document ).ready(function( $ ){
+                // Save last selected element
+                var last_count = 0;
+
+                // Fire function on button click
+                $(".button").click(function() {
+                    // New element will contain updated text
+                    var new_text = ''; // document.createElement("p");
+                    // Split whole text into words
+                    const words = $("p.text-body").text().split(' ');
+
+                    // Search for new `bold` word only until we find it
+                    var skip = false;
+                    // Iterate over each word and find last one seleted
+                    for(var i=0; i < words.length; i++) {
+                        const word = words[i].trim();
+                        // If not `word` then skip it
+                        if(word === '') continue;
+
+                        // Do not `bold` dash
+                        if(word === '—') {
+                            new_text += word + ' ';
+                        } else {
+                            // Make `bold` last counted word
+                            if(i >= last_count && !skip) {
+                                new_text += '<b>' + word + '</b> ';
+                                last_count = i + 1;
+                                skip = true;
+                            } else {
+                                new_text += word + ' ';
+                            }
+                        }
+                    }
+
+                    // Loop over whole text once we reach end
+                    if(last_count >= (words.length - 1)) last_count = 0;
+                    // Replace old text with new one
+                    $("p.text-body").replaceWith('<p class="text-body">' + new_text + '</p>');
+                });
+            });
+        };
+    </script>
+</html>
