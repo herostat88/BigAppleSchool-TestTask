@@ -34,41 +34,51 @@
             jQuery( document ).ready(function( $ ){
                 // Save last selected element
                 var last_count = 0;
+                var interval;
 
                 // Fire function on button click
-                $(".button").click(function() {
-                    // New element will contain updated text
-                    var new_text = ''; // document.createElement("p");
-                    // Split whole text into words
-                    const words = $("p.text-body").text().split(' ');
+                $(".button").click(function(e) {
+                    e.preventDefault();
+                    // Stop previous launch if exists
+                    clearInterval(interval);
 
-                    // Search for new `bold` word only until we find it
-                    var skip = false;
-                    // Iterate over each word and find last one seleted
-                    for(var i=0; i < words.length; i++) {
-                        const word = words[i].trim();
-                        // If not `word` then skip it
-                        if(word === '') continue;
+                    interval = setInterval(function() {
+                        // New element will contain updated text
+                        var new_text = '';
+                        // Split whole text into words
+                        const words = $("p.text-body").text().split(' ');
 
-                        // Do not `bold` dash
-                        if(word === '—') {
-                            new_text += word + ' ';
-                        } else {
-                            // Make `bold` last counted word
-                            if(i >= last_count && !skip) {
-                                new_text += '<b>' + word + '</b> ';
-                                last_count = i + 1;
-                                skip = true;
-                            } else {
+                        // Search for new `bold` word only until we find it
+                        var skip = false;
+                        // Iterate over each word and find last one seleted
+                        for(var i=0; i < words.length; i++) {
+                            const word = words[i].trim();
+                            // If not `word` then skip it
+                            if(word === '') continue;
+
+                            // Do not `bold` dash
+                            if(word === '—') {
                                 new_text += word + ' ';
+                            } else {
+                                // Color text to black
+                                if(i >= last_count && !skip) {
+                                    new_text += '<blktxt>' + word + '</blktxt> ';
+                                    last_count = i + 1;
+                                    skip = true;
+                                } else {
+                                    new_text += word + ' ';
+                                }
                             }
                         }
-                    }
 
-                    // Loop over whole text once we reach end
-                    if(last_count >= (words.length - 1)) last_count = 0;
-                    // Replace old text with new one
-                    $("p.text-body").replaceWith('<p class="text-body">' + new_text + '</p>');
+                        // Loop over whole text once we reach end
+                        if(last_count >= (words.length - 1)) {
+                            last_count = 0;
+                            clearInterval(interval);
+                        }
+                        // Replace old text with new one
+                        $("p.text-body").replaceWith('<p class="text-body">' + new_text + '</p>');
+                    }, 1000);
                 });
             });
         };

@@ -86,6 +86,10 @@ h1 {
     overflow: hidden;
 }
 
+blktxt {
+    color: #000000;
+}
+
 /* Responsive style here */
 @media screen and (min-width: 375px) and (max-width: 1024px) {
     .container {
